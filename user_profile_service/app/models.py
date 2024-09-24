@@ -12,16 +12,16 @@ class User(Base):
     history = relationship("InteractionHistory", back_populates="user")
 
 # Movie model to store movie information
-class Movie(Base):
-    __tablename__ = "movies"
+# class Movie(Base):
+#     __tablename__ = "movies"
     
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    genre = Column(String)
-    description = Column(Text)
-    director = Column(String)
-    release_year = Column(Integer)
-    # Add more metadata as needed
+#     id = Column(Integer, primary_key=True, index=True)
+#     title = Column(String, index=True)
+#     genre = Column(String)
+#     description = Column(Text)
+#     director = Column(String)
+#     release_year = Column(Integer)
+#     # Add more metadata as needed
 
 # Interaction history model for tracking user interactions with movies
 class InteractionHistory(Base):
