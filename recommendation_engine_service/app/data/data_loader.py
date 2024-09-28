@@ -1,7 +1,14 @@
 import pandas as pd
 from sklearn.preprocessing import MultiLabelBinarizer
+from typing import Tuple
+import os
 
-def load_movie_data (path: str = '../resources/movies.csv'):
+curent_dir = os.path.dirname(__file__)
+csv_path = os.path.join(curent_dir, 'movies.csv')
+# print(f"{path} ---000")
+# print(type(csv_path))
+
+def load_movie_data (path: str = csv_path) -> Tuple[pd.DataFrame, pd.DataFrame]:
     # Load the movie data from the CSV file
     movies = pd.read_csv(path)
     movies['genres'] = movies['genres'].apply(lambda x: x.split('|'))
@@ -12,4 +19,4 @@ def load_movie_data (path: str = '../resources/movies.csv'):
 
     return movies, genre_df
 
-
+# print(load_movie_data())
