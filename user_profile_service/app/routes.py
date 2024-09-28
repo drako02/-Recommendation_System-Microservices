@@ -80,3 +80,4 @@ def add_user_history(user_id: int, movie_id: int, interaction_type: str, rating:
 #     db.commit()
 #     db.refresh(new_movie)
 #     return {"message": "Movie added", "movie": new_movie}
+
