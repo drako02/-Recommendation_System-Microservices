@@ -19,7 +19,7 @@ class User(Base):
     history = relationship("InteractionHistory", back_populates="user")
 
     def set_password(self, password: str):
-        self.password_hash = pwd_context(password)
+        self.password_hash = pwd_context.hash(password)
 
     def verify_password(self, password: str) -> bool:
         return pwd_context.verify(password, self.password_hash)
@@ -29,12 +29,12 @@ class InteractionHistory(Base):
     __tablename__ = "interaction_history"
     
     id = Column(Integer, primary_key=True, index=True)
-    movie_id = Column(Integer, ForeignKey('movies.id'))  # Link to Movie model
+    # movie_id = Column(Integer, ForeignKey('movies.id'))  # Link to Movie model
     interaction_type = Column(String)  # e.g., "viewed", "liked", "rated"
     rating = Column(Integer, nullable=True)  # Optional rating (1-5 stars)
     user_id = Column(Integer, ForeignKey('users.id'))
     
     # Relationships
     user = relationship("User", back_populates="history")
-    movie = relationship("Movie")
+    # movie = relationship("Movie")
 
