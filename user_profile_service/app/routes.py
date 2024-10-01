@@ -59,24 +59,37 @@ def add_user_history(user_id: int, movie_id: int, interaction_type: str, rating:
     db.refresh(new_history)
     return {"message": "History added", "history": new_history}
 
-# For testing purposes -- Add  amovie to the database
-# class MovieCreate(BaseModel):
-#     title: str
-#     genre: str
-#     description: str
-#     director: str
-#     release_year: int
 
-# @router.post("/movie/")
-# def create_movie(movie: MovieCreate, db: Session = Depends(get_db)):
-#     new_movie = Movie(
-#         title=movie.title,
-#         genre=movie.genre,
-#         description=movie.description,
-#         director=movie.director,
-#         release_year=movie.release_year
-#     )
-#     db.add(new_movie)
-#     db.commit()
-#     db.refresh(new_movie)
-#     return {"message": "Movie added", "movie": new_movie}
+class UserCreate(BaseModel):
+    name: str
+    email: str  
+    password: str
+
+router.post("/register")
+def register_user(user:UserCreate, db: Session = Depends(get_db) ):
+    existing_user = db.query(User).filter((User.name == user.name) | (User.email == user.email)).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Username or email already exists")
+    
+    # Create new user
+    new_user = User(name = user.name, email = user.email )
+    new_user.set_password(user.password)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return {"message": "User created", "user": new_user}
+
+class UserLogin(BaseModel):
+    name_or_email: str
+    password: str
+
+router.post("/login")
+def login_user(user: UserLogin, db: Session = Depends(get_db)):
+    existing_user = db.query(User).filter((User.name == user.name_or_email) | (User.email == user.name_or_email)).first()
+
+    # Verify the password
+    if not existing_user or not existing_user.verify_password(user.password):
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+    
+    return {"message": "Login successful", "user_id": existing_user.id}
+

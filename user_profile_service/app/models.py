@@ -1,6 +1,11 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship
 from .database import Base
+from passlib.context import CryptContext
+
+
+# Password hashing configuration
+pwd_context = CryptContext(schemes=["bcrypt"])
 
 # User model to store user information
 class User(Base):
@@ -8,20 +13,16 @@ class User(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
+    email = Column(String, unique=True, index=True)
+    password_hash = Column(String)
     preferences = Column(Text)  # Store movie genre preferences (e.g., "Action, Drama")
     history = relationship("InteractionHistory", back_populates="user")
 
-# Movie model to store movie information
-# class Movie(Base):
-#     __tablename__ = "movies"
-    
-#     id = Column(Integer, primary_key=True, index=True)
-#     title = Column(String, index=True)
-#     genre = Column(String)
-#     description = Column(Text)
-#     director = Column(String)
-#     release_year = Column(Integer)
-#     # Add more metadata as needed
+    def set_password(self, password: str):
+        self.password_hash = pwd_context(password)
+
+    def verify_password(self, password: str) -> bool:
+        return pwd_context.verify(password, self.password_hash)
 
 # Interaction history model for tracking user interactions with movies
 class InteractionHistory(Base):
@@ -36,3 +37,4 @@ class InteractionHistory(Base):
     # Relationships
     user = relationship("User", back_populates="history")
     movie = relationship("Movie")
+
