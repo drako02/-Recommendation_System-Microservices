@@ -26,7 +26,7 @@ const LoginPage = () => {
     };
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault;
+        event.preventDefault();
         const response = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -44,7 +44,7 @@ const LoginPage = () => {
 
     return (
         // <div>
-        <form className='w-[100%] h-[80%] px-[5px]' >
+        <form className='w-[100%] h-[80%] px-[5px]' onSubmit={handleSubmit} >
             
             <div className='w-[100%] h-[100%] flex flex-col justify-between items-center gap-[15px] p-[10px]'>
                 <p className='font-medium'> Login Here </p>
@@ -67,7 +67,7 @@ const LoginPage = () => {
                        
                 </FormControl>
                 
-                <Button colorScheme='teal'> Sign In</Button>
+                <Button colorScheme='teal' type='submit'> Sign In</Button>
                 </div>
             </form>
         // </div>

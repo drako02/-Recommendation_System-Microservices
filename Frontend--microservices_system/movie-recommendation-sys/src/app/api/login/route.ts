@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 
-export default async function POST(request:Request) {
+export async function POST(request:Request) {
     try {
         // const { name_or_email, password } = await request.json();
 
-        const res = await fetch("//", {
+        const res = await fetch("http://localhost:8000/login", {
             method: "POST",
             headers: { 'Content-Type': 'application/json', },
             body: JSON.stringify(await request.json())
