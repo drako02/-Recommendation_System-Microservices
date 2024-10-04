@@ -84,12 +84,14 @@ class UserLogin(BaseModel):
     password: str
 
 @router.post("/login")
-def login_user(user: UserLogin, db: Session = Depends(get_db)):
+async def login_user(user: UserLogin, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter((User.name == user.name_or_email) | (User.email == user.name_or_email)).first()
 
     # Verify the password
     if not existing_user or not existing_user.verify_password(user.password):
+        print("invalid credentials")
         raise HTTPException(status_code=400, detail="Invalid credentials")
-    
+        
+    print("Login Successful")
     return {"message": "Login successful", "user_id": existing_user.id}
 
