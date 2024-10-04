@@ -12,8 +12,8 @@ import {
 import { useState } from 'react';
 
 interface FormData {
-    name_or_email: string,
-    password: string
+    name_or_email: string;
+    password: string;
 }
 
 const LoginPage = () => {
@@ -33,8 +33,10 @@ const LoginPage = () => {
             body: JSON.stringify(formData)
         });
 
+        console.log(formData)
+
         if (response.ok) {
-            const data = await response.json;
+            const data = await response.json();
             console.log('Login successful', data);
             setFormData({ name_or_email: '', password: '' });
         } else {
