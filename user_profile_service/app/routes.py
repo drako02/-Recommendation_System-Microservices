@@ -1,8 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+
+from .auth_lib import create_access_token
 from .models import User, InteractionHistory
 from .database import get_db
+from datetime import datetime, timedelta, timezone
+
 
 router = APIRouter()
 
@@ -92,6 +96,11 @@ async def login_user(user: UserLogin, db: Session = Depends(get_db)):
         print("invalid credentials")
         raise HTTPException(status_code=400, detail="Invalid credentials")
         
+    # Generate JWT token
+    access_token_expires =  timedelta(minutes=30)
+    access_token =  create_access_token(data={"sub": existing_user.email}, expires_delta=access_token_expires)
+
     print("Login Successful")
-    return {"message": "Login successful", "user_id": existing_user.id}
+    return {"access_token": access_token, "token_type": "bearer"}
+    # return {"message": "Login successful", "user_id": existing_user.id}
 
