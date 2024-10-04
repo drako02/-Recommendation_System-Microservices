@@ -49,8 +49,8 @@ const SignupPage = () => {
 
                 <div className='w-[100%] h-[100%] flex flex-col justify-between items-center gap-[15px] p-[10px]'>
                     <p className='font-medium'> Create an account for free </p>
-                    <FormControl isInvalid={ false } >
-                        <FormLabel fontSize="small"> Name </FormLabel>
+                    <FormControl isInvalid={ false } isRequired >
+                        <FormLabel fontSize="small" > Name </FormLabel>
                         <Input type='text'
                             value={ formData.name }
                             name="name"
@@ -59,10 +59,9 @@ const SignupPage = () => {
 
                     </FormControl>
 
-                    <FormControl isInvalid={ false } >
+                    <FormControl isInvalid={ false } isRequired >
                         <FormLabel fontSize="small"> Email </FormLabel>
                         <Input type='email'
-                            // required
                             value={ formData.email }
                             name="email"
                             onChange={ handleInputChange }
@@ -70,7 +69,7 @@ const SignupPage = () => {
 
                     </FormControl>
 
-                    <FormControl isInvalid={ false }>
+                    <FormControl isInvalid={ false } isRequired>
                         <FormLabel fontSize="small"> Password  </FormLabel>
                         <Input
                             type="password"
