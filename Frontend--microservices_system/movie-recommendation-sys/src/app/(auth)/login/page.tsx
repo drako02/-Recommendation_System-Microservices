@@ -10,6 +10,7 @@ import {
     Button,
 } from '@chakra-ui/react'
 import { useState } from 'react';
+import Link from 'next/link';
 
 interface FormData {
     name_or_email: string;
@@ -46,32 +47,35 @@ const LoginPage = () => {
 
     return (
         // <div>
-        <form className='w-[100%] h-[80%] px-[5px]' onSubmit={handleSubmit} >
-            
-            <div className='w-[100%] h-[100%] flex flex-col justify-between items-center gap-[15px] p-[10px]'>
-                <p className='font-medium'> Login Here </p>
+        <>
+            <form className='w-[100%] h-[80%] px-[5px]' onSubmit={ handleSubmit } >
+
+                <div className='w-[100%] h-[100%] flex flex-col justify-between items-center gap-[15px] p-[10px]'>
+                    <p className='font-medium'> Login Here </p>
                     <FormControl isInvalid={ false } >
-                    <FormLabel fontSize="small"> Username / Email </FormLabel>
-                    <Input type='text'
-                        name='name_or_email'
-                        value={formData.name_or_email}
-                        onChange={ handleInputChange} />
-                        
+                        <FormLabel fontSize="small"> Username / Email </FormLabel>
+                        <Input type='text'
+                            name='name_or_email'
+                            value={ formData.name_or_email }
+                            onChange={ handleInputChange } />
+
                     </FormControl>
 
                     <FormControl isInvalid={ false }>
-                    <FormLabel fontSize="small"> Password  </FormLabel>
-                    <Input type='password'
-                        name='password'
-                        value={ formData.password }
-                        onChange={ handleInputChange} />
-                    
-                       
-                </FormControl>
-                
-                <Button colorScheme='teal' type='submit'> Sign In</Button>
+                        <FormLabel fontSize="small"> Password  </FormLabel>
+                        <Input type='password'
+                            name='password'
+                            value={ formData.password }
+                            onChange={ handleInputChange } />
+
+
+                    </FormControl>
+
+                    <Button colorScheme='teal' type='submit'> Sign In</Button>
                 </div>
             </form>
+            <Link href="/signup" className="underline text-[14px] text-gray-500"> Don't have an account? Sign Up</Link>
+        </>
         // </div>
     );
 };
