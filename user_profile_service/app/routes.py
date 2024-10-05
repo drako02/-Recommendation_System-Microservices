@@ -100,8 +100,8 @@ async def login_user(user: UserLogin, db: Session = Depends(get_db)):
     access_token_expires =  timedelta(minutes=30)
     access_token =  create_access_token(data={"sub": existing_user.email}, expires_delta=access_token_expires)
 
-    print("Login Successful")
-    return {"access_token": access_token, "token_type": "bearer"}
+    print("Login Successful", existing_user.id)
+    return {"access_token": access_token, "token_type": "bearer", "user_id": existing_user.id}
     # return {"message": "Login successful", "user_id": existing_user.id}
 
 class UserOut(BaseModel):
@@ -110,7 +110,7 @@ class UserOut(BaseModel):
     email: str
 
 @router.get("/profile/{user_id}", response_model=UserOut)
-async def get_user_profile(user_id: int, db:Session = get_db, current_user: User = Depends(get_current_user)):
+async def get_user_profile(user_id: int, db:Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     if current_user.id != user_id:
         raise HTTPException(status_code=403, detail="Not authorized to access this profile")
     
@@ -118,6 +118,7 @@ async def get_user_profile(user_id: int, db:Session = get_db, current_user: User
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
+    print(user.email)
     return user
     
 
