@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from .auth_lib import create_access_token
+from .auth_lib import create_access_token, get_current_user
 from .models import User, InteractionHistory
 from .database import get_db
 from datetime import datetime, timedelta, timezone
@@ -103,4 +103,21 @@ async def login_user(user: UserLogin, db: Session = Depends(get_db)):
     print("Login Successful")
     return {"access_token": access_token, "token_type": "bearer"}
     # return {"message": "Login successful", "user_id": existing_user.id}
+
+class UserOut(BaseModel):
+    id: int
+    name: str
+    email: str
+
+@router.get("/profile/{user_id}", response_model=UserOut)
+async def get_user_profile(user_id: int, db:Session = get_db, current_user: User = Depends(get_current_user)):
+    if current_user.id != user_id:
+        raise HTTPException(status_code=403, detail="Not authorized to access this profile")
+    
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return user
+    
 
