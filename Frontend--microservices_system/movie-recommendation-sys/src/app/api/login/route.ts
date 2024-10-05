@@ -19,7 +19,8 @@ export async function POST(request:Request) {
         }
 
         const data = await res.json();
-        console.log('Response fromBackend:', data)
+        localStorage.setItem('token', data.access_token)
+        // console.log('Response fromBackend:', data)
 
         return NextResponse.json({ status: 'success' }, { status: 200 });
 
