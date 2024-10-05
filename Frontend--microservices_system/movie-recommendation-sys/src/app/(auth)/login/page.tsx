@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface FormData {
     name_or_email: string;
@@ -20,6 +21,7 @@ interface FormData {
 const LoginPage = () => {
 
     const [formData, setFormData] = useState<FormData>({ name_or_email: '', password: '' });
+    const router = useRouter();
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -38,11 +40,18 @@ const LoginPage = () => {
 
         if (response.ok) {
             const data = await response.json();
+            localStorage.setItem('token', data.access_token);
             console.log('Login successful', data);
+            const user_id = data['user_id'];
+
+            router.push(`/profile/${user_id}`);
+
             setFormData({ name_or_email: '', password: '' });
         } else {
             console.error('Login failed');
         }
+
+
     };
 
     return (

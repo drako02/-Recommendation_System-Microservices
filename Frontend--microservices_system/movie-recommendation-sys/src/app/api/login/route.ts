@@ -19,10 +19,10 @@ export async function POST(request:Request) {
         }
 
         const data = await res.json();
-        localStorage.setItem('token', data.access_token)
+        // localStorage.setItem('token', data.access_token)
         // console.log('Response fromBackend:', data)
 
-        return NextResponse.json({ status: 'success' }, { status: 200 });
+        return NextResponse.json({ status: 'success', access_token: data.access_token, user_id: data.user_id }, { status: 200 });
 
         // console.log("Received form data: ", { name_or_email, password });
 

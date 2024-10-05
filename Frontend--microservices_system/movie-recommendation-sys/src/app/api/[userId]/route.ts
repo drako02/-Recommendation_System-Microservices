@@ -12,7 +12,7 @@ export async function GET(request: Request, { params }: { params: Params }) {
     }
 
     try {
-        const res = await fetch(`http://127.0.0.1:8000/profile${userId}`, {
+        const res = await fetch(`http://127.0.0.1:8000/profile/${userId}`, {
             method: 'GET',
             headers: {
                 'Authorization': token,

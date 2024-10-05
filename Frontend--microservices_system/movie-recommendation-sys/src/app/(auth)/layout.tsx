@@ -18,7 +18,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
                 </div>
 
                 <div className='w-[40%] h-[100%] flex'>
-                    <Image className='bg-cover bg-no-repeat bg-center rounded-r-lg' src={banner} alt="logo" />
+                    <Image className='bg-cover bg-no-repeat bg-center rounded-r-lg' src={ banner } alt="logo" priority={ true } />
 
                 </div>
 

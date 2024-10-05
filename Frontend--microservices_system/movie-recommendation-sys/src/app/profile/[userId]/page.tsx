@@ -1,22 +1,25 @@
-// 'use client';
+'use client';
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 interface User {
+    id: number;
     name: string;
     email: string;
 }
 const UserProfile = () => {
     const [user, setUser] = useState<User | null>(null);
     const router = useRouter();
-    const { userId } = router.query;
+    // const params = useParams();
+    const { userId } = useParams();
 
     useEffect(() => {
         const fetchUserProfile = async () => {
             if (!userId) return;
 
-            const token = localStorage.getItem('access_token');
+            const token = localStorage.getItem('token');
             if (!token) {
                 console.error('No token found, redirect to login');
                 router.push('/login');
@@ -48,7 +51,9 @@ const UserProfile = () => {
 
     return (
         <div>
-            <h1>{ user.name }</h1>
+            <h1>Your Name: { user.name }</h1>
+            <h1>Your Email: { user.email }</h1>
+            <h1>Your ID: { user.id }</h1>
         </div>
     );
 };
