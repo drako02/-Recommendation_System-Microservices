@@ -6,9 +6,9 @@ from .database import Base
 class Movie(Base):
     __tablename__ = "movies"
     
-    id = Column(Integer, primary_key=True, index=True)
+    movieId = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
-    genre = Column(String)
+    genres = Column(String)
     description = Column(Text)
     director = Column(String)
     release_year = Column(Integer)
