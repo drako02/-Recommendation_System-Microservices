@@ -6,6 +6,7 @@ from fastapi import Depends, FastAPI
 # from app.models import Movie
 from .routes import router as user_router
 from .database import Base, engine, get_db
+from fastapi.middleware.cors import CORSMiddleware
 # from sqlalchemy.orm import Session
 import logging
 # import pandas as pd
@@ -49,5 +50,13 @@ print(f"{base_dir} lllll")
 app = FastAPI()
 
 app.include_router(user_router)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Or "*" to allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 

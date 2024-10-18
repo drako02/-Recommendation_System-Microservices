@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.params import Query
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from .models import  Movie
 from .database import get_db
+from typing import List
 
 router = APIRouter()
 
@@ -11,13 +13,21 @@ class Movie_Data(BaseModel):
     title:str
     genres:str
 
+    class Config:
+        orm_mode = True
+
+class MovieResponse(BaseModel):
+    movies: List[Movie_Data]
+
 # Fetch movie metadata
-@router.get("/movie/{movie_id}", response_model=Movie_Data)
-def get_movie(movie_id: int, db: Session = Depends(get_db)):
-    movie = db.query(Movie).filter(Movie.id == movie_id).first()
-    if movie is None:
-        raise HTTPException(status_code=404, detail="Movie not found")
-    return movie
+@router.get("/movies/", response_model=MovieResponse)
+def get_movie(
+    limit: int = Query(10, ge=1, le=100),
+    offset: int = Query(0, ge=0),
+    db: Session = Depends(get_db)
+):
+    movies = db.query(Movie).offset(offset).limit(limit).all()
+    return {"movies": movies} 
 
 
 # class MovieCreate(BaseModel):
